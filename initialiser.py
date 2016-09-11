@@ -38,11 +38,11 @@ class SmokeagerFreshInit():
 
 	@classmethod
 	def get_smokeager_home_dir(self):
-		return self.get_home_dir() + "/.smokeager"	
+		return os.path.join(self.get_home_dir(), ".smokeager")
 
 	def __create_db_file(self):
 		__smokeager_home_dir = self.__smokeager_home_dir
-		__db_file_path = __smokeager_home_dir+"/smokeagerDB.db"
+		__db_file_path = os.path.join(__smokeager_home_dir,"smokeagerDB.db")
 		if not os.path.exists(__db_file_path):
 			__db_file = open(__db_file_path, "wb")
 			print("Created db file: %s" %__db_file)
@@ -56,7 +56,7 @@ class SmokeagerFreshInit():
 	def get_db_file(self):
 		""" returns db file path """
 
-		__db_file_path = self.get_smokeager_home_dir()+"/smokeagerDB.db"
+		__db_file_path = os.path.join(self.get_smokeager_home_dir(),"smokeagerDB.db")
 		if os.path.exists(__db_file_path):
 			return __db_file_path
 		else:
@@ -81,9 +81,9 @@ class SmokeagerDB():
 	def __connect_db(self):
 		""" connects to db and sets self.__conn to conn object """
 
-		__db_file = self.__db_file_path
+		__db = SqliteDatabase(self.__db_file_path)
 		try:
-			conn = sqlite3.connect(__db_file)
+			conn = __db.connect()
 			self.__conn = conn
 			print("Smokeager DB connected: %s" %conn)
 		except Exception as e:
